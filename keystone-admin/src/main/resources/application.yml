@@ -1,0 +1,118 @@
+# ======================================================================
+# Keystone 基础脚手架 - 应用配置
+# ======================================================================
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: keystone
+
+  # ======================== Spring Boot Admin 客户端配置 ========================
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080 # 指向 Admin Server 地址 (如果是同一应用可写自身，或者独立的admin服务端)
+        instance:
+          prefer-ip: true
+
+  # ======================== 数据源配置 ========================
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://1.14.120.249:13306/keystone?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 448984053Du
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  # ======================== Redis 配置 ========================
+  data:
+    redis:
+      host: 1.14.120.249
+      port: 16379
+      password: redis_dubo
+      database: 15
+      timeout: 10s
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+          max-wait: -1ms
+
+  # ======================== Jackson 配置 ========================
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+# ======================== MyBatis-Flex 配置 ========================
+mybatis-flex:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# ======================== JWT Token 配置 ========================
+keystone:
+  token:
+    secret: keystoneDefaultSecretKeyForJwtTokenSigning2026
+    expire-minutes: 720
+    header: Authorization
+    prefix: "Bearer "
+
+  # ======================== AI 配置 ========================
+  ai:
+    provider: openai
+    default-model: gpt-4o
+    temperature: 0.7
+    max-tokens: 4096
+    system-prompt: "你是 Keystone 智能助手，回答问题简洁准确。"
+
+# ======================== Spring AI OpenAI 配置 ========================
+spring.ai:
+  openai:
+    api-key: ${OPENAI_API_KEY:sk-your-api-key}
+    base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+    chat:
+      options:
+        model: gpt-4o
+        temperature: 0.7
+  ollama:
+    base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+    chat:
+      options:
+        model: llama3
+
+# ======================== Knife4j 配置 ========================
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+# ======================== Actuator 监控配置 ========================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # 暴露所有端点，包含 health, info, env, metrics 等
+  endpoint:
+    health:
+      show-details: always # 始终显示健康检查详细信息
+  info:
+    env:
+      enabled: true
+
+# ======================== 日志配置 ========================
+logging:
+  level:
+    root: info
+    com.keystone: debug
+    com.mybatisflex: debug

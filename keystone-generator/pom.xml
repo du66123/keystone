@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.keystone</groupId>
+        <artifactId>keystone-root</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>keystone-generator</artifactId>
+    <packaging>jar</packaging>
+    <description>Keystone 代码生成器 - 基于表结构一键生成全栈 CRUD 代码</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.keystone</groupId>
+            <artifactId>keystone-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-codegen</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

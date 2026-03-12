@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # ======================================================================
+  # MySQL 8.0
+  # ======================================================================
+  mysql:
+    image: mysql:8.0
+    container_name: keystone-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keystone
+      TZ: Asia/Shanghai
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --default-time-zone=+08:00
+      - --lower_case_table_names=1
+    volumes:
+      - ./sql/ddl:/docker-entrypoint-initdb.d/1-ddl
+      - ./sql/dml:/docker-entrypoint-initdb.d/2-dml
+      - mysql-data:/var/lib/mysql
+
+  # ======================================================================
+  # Redis
+  # ======================================================================
+  redis:
+    image: redis:7.0-alpine
+    container_name: keystone-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      TZ: Asia/Shanghai
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mysql-data:
+  redis-data:
